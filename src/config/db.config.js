@@ -1,37 +1,38 @@
-exports.dbConfig = {
-    HOST: "localhost",
-  USER: "postgres",
-  PASSWORD: "123",
-  DB: "testdb",
-  dialect: "postgres",
+const env = require('./env');
+
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(env.database, env.username, env.password, {
+  host: env.host,
+  dialect: env.dialect,
+  operatorsAliases: false,
+
   pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-}
+    max: env.max,
+    min: env.pool.min,
+    acquire: env.pool.acquire,
+    idle: env.pool.idle,
+  },
+});
 
-// module.exports = {
-//     HOST: "localhost",
-//     USER: "postgres",
-//     PASSWORD: "123",
-//     DB: "testdb",
-//     dialect: "postgres",
-//     pool: {
-//       max: 5,
-//       min: 0,
-//       acquire: 30000,
-//       idle: 10000
-//     }
-//   };
+const db = {};
 
-/*----------------------------------------------------------------
-First five parameters are for PostgreSQL connection.
-pool is optional, it will be used for Sequelize connection pool configuration:
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-max: maximum number of connection in pool
-min: minimum number of connection in pool
-idle: maximum time, in milliseconds, that a connection can be idle before being released
-acquire: maximum time, in milliseconds, that pool will try to get connection before throwing error
-*/
+db.Customer = require('../models/customer.model.js')(sequelize, Sequelize);
+
+sequelize
+  .sync({
+    logging: console.log,
+  })
+  .then(() =>{
+      // seeding here
+    db.Customer.create({
+        firstname: 'testing firstname',
+        lastname: 'testing lastname'
+    })
+  })
+  .then(() => console.log('connection established successfully'))
+  .catch((err) => console.log('Unable to connect to database ', err));
+
+module.exports = db;
