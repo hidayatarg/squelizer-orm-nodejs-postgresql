@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/customers', customer.findAll)
+app.get('/api/customers/:id', customer.findOne)
 
 
 app.listen(port, () => {

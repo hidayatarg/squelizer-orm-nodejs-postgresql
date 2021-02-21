@@ -54,7 +54,29 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single Customer with an id
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  if (id && id <= 0) {
+    res.status(500).send({
+      message: 'Error id should be greater than zero.',
+    });
+  }
+
+  Customer.findByPk(id)
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      }
+      res.status(200).send({
+        message: 'Not Found Customer with id=' + id,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: 'Error retrieving Customer with id=' + id,
+      });
+    });
+};
 
 // Update a Customer by the id in the request
 exports.update = (req, res) => {};
