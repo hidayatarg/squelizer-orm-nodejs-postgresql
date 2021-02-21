@@ -1,0 +1,2 @@
+- Create Generic routes
+- Added Middlewares
