@@ -19,6 +19,8 @@ app.get('/', (req, res) => {
 
 app.get('/api/customers', customer.findAll)
 app.get('/api/customers/:id', customer.findOne)
+app.put('/api/customers/update/:id', customer.update)
+app.delete('/api/customers/delete/:id', customer.delete)
 
 
 app.listen(port, () => {
