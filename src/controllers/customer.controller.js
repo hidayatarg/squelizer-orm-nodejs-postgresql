@@ -79,10 +79,55 @@ exports.findOne = (req, res) => {
 };
 
 // Update a Customer by the id in the request
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Customer.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Customer was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Customer with id=" + id
+      });
+    });
+};
+
 
 // Delete a Customer with the specified id in the request
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Customer.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Customer was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Customer with id=${id}. Customer was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Customer with id=" + id
+      });
+    });
+};
 
 // Delete all Customer from the database.
 exports.deleteAll = (req, res) => {};
