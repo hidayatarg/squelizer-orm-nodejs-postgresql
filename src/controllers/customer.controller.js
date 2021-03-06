@@ -88,21 +88,20 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Customer was updated successfully."
+          message: 'Customer was updated successfully.',
         });
       } else {
         res.send({
-          message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`
+          message: `Cannot update Customer with id=${id}. Maybe Customer was not found or req.body is empty!`,
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Customer with id=" + id
+        message: 'Error updating Customer with id=' + id,
       });
     });
 };
-
 
 // Delete a Customer with the specified id in the request
 exports.delete = (req, res) => {
@@ -114,20 +113,34 @@ exports.delete = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Customer was deleted successfully!"
+          message: 'Customer was deleted successfully!',
         });
       } else {
         res.send({
-          message: `Cannot delete Customer with id=${id}. Customer was not found!`
+          message: `Cannot delete Customer with id=${id}. Customer was not found!`,
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Customer with id=" + id
+        message: 'Could not delete Customer with id=' + id,
       });
     });
 };
 
 // Delete all Customer from the database.
-exports.deleteAll = (req, res) => {};
+exports.deleteAll = (req, res) => {
+  Customer.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({ message: `${nums} customers were deleted successfully!` });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || 'Some error occurred while removing all customers.',
+      });
+    });
+};
