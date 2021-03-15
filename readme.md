@@ -1,5 +1,6 @@
-- Create Generic routes
+- Create Generic routes ----> DONE
 - Added Middlewares
+- Dockerization ----> DONE
 
 ## Dockerization
 
