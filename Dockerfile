@@ -1,8 +1,6 @@
 FROM node:12.13.0-alpine
 
 WORKDIR /src
-RUN npm install nodemon -g
-
 
 COPY ./package.json .
 COPY ./package-lock.json .
@@ -14,3 +12,5 @@ COPY . .
 EXPOSE 3000
 
 CMD npm run dev
+
+# TODO: add the process for the production here
